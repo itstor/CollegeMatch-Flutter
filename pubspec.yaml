@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -30,10 +30,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  get: ^4.6.1
+  firebase_auth: ^3.3.8
+  google_sign_in: ^5.2.4
+  cloud_firestore: ^3.1.9
+  firebase_storage: ^10.2.8
+  google_fonts: ^2.3.0
+  image_picker: ^0.8.4+10
+  dio: ^4.0.4
+  cached_network_image: ^3.2.0
 
 dev_dependencies:
   flutter_test:
@@ -51,7 +59,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -73,17 +80,58 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+
   # fonts:
-  #   - family: Schyler
+  #   - family: Mulish
   #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  #       - asset: assets/fonts/mulish/Mulish-Black.ttf
+  #         style: normal
+  #         weight: 900
+  #       - asset: assets/fonts/mulish/Mulish-BlackItalic.ttf
   #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 900
+  #       - asset: assets/fonts/mulish/Mulish-Bold.ttf
+  #         style: normal
   #         weight: 700
+  #       - asset: assets/fonts/mulish/Mulish-BoldItalic.ttf
+  #         style: italic
+  #         weight: 700
+  #       - asset: assets/fonts/mulish/Mulish-ExtraBold.ttf
+  #         style: normal
+  #         weight: 800
+  #       - asset: assets/fonts/mulish/Mulish-ExtraBoldItalic.ttf
+  #         style: italic
+  #         weight: 800
+  #       - asset: assets/fonts/mulish/Mulish-ExtraLight.ttf
+  #         style: normal
+  #         weight: 200
+  #       - asset: assets/fonts/mulish/Mulish-ExtraLightItalic.ttf
+  #         style: italic
+  #         weight: 200
+  #       - asset: assets/fonts/mulish/Mulish-Italic.ttf
+  #         style: italic
+  #         weight: 400
+  #       - asset: assets/fonts/mulish/Mulish-Light.ttf
+  #         style: normal
+  #         weight: 300
+  #       - asset: assets/fonts/mulish/Mulish-LightItalic.ttf
+  #         style: italic
+  #         weight: 300
+  #       - asset: assets/fonts/mulish/Mulish-Medium.ttf
+  #         style: normal
+  #         weight: 500
+  #       - asset: assets/fonts/mulish/Mulish-MediumItalic.ttf
+  #         style: italic
+  #         weight: 500
+  #       - asset: assets/fonts/mulish/Mulish-Regular.ttf
+  #         style: normal
+  #         weight: 400
+  #       - asset: assets/fonts/mulish/Mulish-SemiBold.ttf
+  #         style: normal
+  #         weight: 600
+  #       - asset: assets/fonts/mulish/Mulish-SemiBoldItalic.ttf
+  #         style: italic
+  #         weight: 600
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
