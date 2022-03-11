@@ -1,4 +1,4 @@
-package com.example.college_match
+package com.three.collegematch
 
 import io.flutter.embedding.android.FlutterActivity
 
