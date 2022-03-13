@@ -50,6 +50,7 @@ dependencies:
   flutter_iconly: ^1.0.2
   intl_phone_number_input: ^0.7.0+2
   pinput: ^2.1.4
+  get_storage: ^2.0.3
 
 dev_dependencies:
   flutter_test:

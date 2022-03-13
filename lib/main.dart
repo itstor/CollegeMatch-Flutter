@@ -1,20 +1,21 @@
 import 'package:college_match/controller/auth_controller.dart';
 import 'package:college_match/core/themes/app_theme.dart';
 import 'package:college_match/core/values/firebase_constants.dart';
+import 'package:college_match/data/services/auth_service.dart';
 import 'package:college_match/screens/routes/routes.dart';
 import 'package:college_match/screens/widget_test/widget_test.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await firebaseInitialization.then((_) {
+    Get.lazyPut(() => AuthService());
     Get.put(AuthController());
   });
-  await SharedPreferences.getInstance().then((prefs) {
-    Get.lazyPut(() => prefs);
-  });
+  await GetStorage.init();
   runApp(const MyApp());
 }
 

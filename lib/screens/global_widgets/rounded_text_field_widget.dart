@@ -18,6 +18,7 @@ class RoundedTextFieldWidget extends StatelessWidget {
   final bool obscureText;
   final Widget? suffixIcon;
   final String? initialValue;
+  final String? errorText;
 
   const RoundedTextFieldWidget({
     Key? key,
@@ -33,6 +34,7 @@ class RoundedTextFieldWidget extends StatelessWidget {
     this.obscureText = false,
     this.suffixIcon,
     this.initialValue,
+    this.errorText,
   }) : super(key: key);
 
   @override
@@ -49,6 +51,7 @@ class RoundedTextFieldWidget extends StatelessWidget {
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
         hintText: hintText,
+        errorText: errorText,
         hintStyle: Get.textTheme.bodyText2!.copyWith(
           fontWeight: FontWeight.w600,
           color: const Color(0xFFC8C8C8),

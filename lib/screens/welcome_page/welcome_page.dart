@@ -1,4 +1,5 @@
 import 'package:college_match/core/values/firebase_constants.dart';
+import 'package:college_match/data/services/auth_service.dart';
 import 'package:college_match/screens/global_widgets/button_logo_widget.dart';
 import 'package:college_match/screens/global_widgets/circle_logo_widget.dart';
 import 'package:college_match/screens/global_widgets/dot_loading.dart';
@@ -16,11 +17,16 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class WelcomePage extends StatelessWidget {
   static const String routeName = "/welcome-page";
-  WelcomePage({Key? key}) : super(key: key);
+  WelcomePage({
+    Key? key,
+    this.initialSignUpSteps = SignUpSteps.first,
+  }) : super(key: key);
 
   final _screenSize = Get.mediaQuery.size;
   final _controller = Get.find<WelcomePageController>();
   final _signupController = Get.find<SignUpController>();
+  final _authService = Get.find<AuthService>();
+  final SignUpSteps initialSignUpSteps;
 
   @override
   Widget build(BuildContext context) {
@@ -237,9 +243,7 @@ class WelcomePage extends StatelessWidget {
               glowOffset: const Offset(0, 8),
               borderRadius: 34,
               blurRadius: 15,
-              onPressed: () {
-                authController.signInWithGoogle();
-              },
+              onPressed: _authService.signInWithGoogle,
             ),
             Expanded(child: Container()),
             Row(
@@ -301,13 +305,13 @@ class WelcomePage extends StatelessWidget {
                 children: [
                   SignUpFormFirst(),
                   SignUpFormSecond(),
-                  ConstrainedBox(
-                    constraints:
-                        BoxConstraints(minHeight: Get.size.height * 0.5),
-                    child: Center(
-                      child: SignUpFormOTP(),
-                    ),
-                  ),
+                  // ConstrainedBox(
+                  //   constraints:
+                  //       BoxConstraints(minHeight: Get.size.height * 0.5),
+                  //   child: Center(
+                  //     child: SignUpFormOTP(),
+                  //   ),
+                  // ),
                 ],
               ),
             ],
@@ -329,7 +333,7 @@ class WelcomePage extends StatelessWidget {
           padding: 8),
       color: Colors.white.withOpacity(0.58),
       text: "Sign in with Google",
-      onTap: authController.signInWithGoogle,
+      onTap: _authService.signInWithGoogle,
     );
   }
 
