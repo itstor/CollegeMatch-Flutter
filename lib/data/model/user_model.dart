@@ -1,32 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  String uid;
-  String answerId;
-  String photoUrl;
-  String email;
-  String username;
-  String phone;
-  String name;
-  String major;
-  bool questionaireFilled;
-  bool registerFinished;
-  bool emailVerified;
-  List<String> alreadyConnect;
+  String? uid;
+  String? answerId;
+  String? photoUrl;
+  String? email;
+  String? username;
+  String? phone;
+  String? name;
+  String? major;
+  String? gender;
+  String? mbti;
+  bool? questionaireFilled;
+  bool? registerFinished;
+  bool? emailVerified;
+  List<String>? alreadyConnect;
 
   UserModel({
-    required this.uid,
-    required this.answerId,
-    required this.photoUrl,
-    required this.email,
-    required this.username,
-    required this.phone,
-    required this.name,
-    required this.major,
-    required this.questionaireFilled,
-    required this.registerFinished,
-    required this.alreadyConnect,
-    required this.emailVerified,
+    this.uid,
+    this.answerId,
+    this.photoUrl,
+    this.email,
+    this.username,
+    this.phone,
+    this.name,
+    this.major,
+    this.questionaireFilled,
+    this.registerFinished,
+    this.alreadyConnect,
+    this.emailVerified,
+    this.mbti,
+    this.gender,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,6 +43,8 @@ class UserModel {
       'phone': phone,
       'name': name,
       'major': major,
+      'mbti': mbti,
+      'gender': gender,
       'questionaireFilled': questionaireFilled,
       'registerFinished': registerFinished,
       'alreadyConnect': alreadyConnect,
@@ -56,6 +62,8 @@ class UserModel {
       phone: doc.get('phone'),
       name: doc.get('name'),
       major: doc.get('major'),
+      mbti: doc.get('mbti'),
+      gender: doc.get('gender'),
       questionaireFilled: doc.get('questionaireFilled'),
       registerFinished: doc.get('registerFinished'),
       alreadyConnect: doc.get('alreadyConnect'),

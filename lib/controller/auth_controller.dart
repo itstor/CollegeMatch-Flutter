@@ -1,5 +1,6 @@
 import 'package:college_match/core/values/firebase_constants.dart';
 import 'package:college_match/data/services/auth_service.dart';
+import 'package:college_match/screens/welcome_page/controllers/welcome_page_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -25,41 +26,23 @@ class AuthController extends GetxController {
     googleSignInAccount = Rx<GoogleSignInAccount?>(googleSign.currentUser);
 
     firebaseUser.bindStream(auth.userChanges());
-    ever(firebaseUser, setInitialScreen);
-
-    googleSignInAccount.bindStream(googleSign.onCurrentUserChanged);
-    ever(googleSignInAccount, _setInitialScreenGoogle);
+    ever(firebaseUser, _setInitialScreen);
   }
 
-  setInitialScreen(User? user) async {
+  _setInitialScreen(User? user) {
     if (user == null) {
-      Get.offNamed("/welcome-page");
+      Get.offAllNamed('/welcome-page');
     } else {
-      bool isUserFinishedRegister =
-          await _authService.isUserFinishedRegister(user.uid);
-      bool isUserFilledQuestionnaire =
-          await _authService.isUserFilledQuestionaire(user.uid);
-
-      if (isUserFinishedRegister && !isUserFilledQuestionnaire) {
-        Get.offNamed("/chat-page");
-      } else {
-        Get.offNamed("/welcome-page");
-        print("FIRED");
-      }
+      Get.offAllNamed('/chat-page');
     }
   }
 
-  _setInitialScreenGoogle(GoogleSignInAccount? googleSignInAccount) async {
+  _setInitialScreenGoogle(GoogleSignInAccount? googleSignInAccount) {
+    print(googleSignInAccount);
     if (googleSignInAccount == null) {
-      Get.offNamed("/welcome-page");
+      Get.offAllNamed('/welcome-page');
     } else {
-      // bool isUserFinishedRegister = await _authService
-      //     .isUserFinishedRegister(FirebaseAuth.instance.currentUser!.uid);
-      // bool isUserFilledQuestionnaire = await _authService
-      //     .isUserFilledQuestionaire(FirebaseAuth.instance.currentUser!.uid);
-      // print(isUserFilledQuestionnaire);
-      // print(isUserFinishedRegister);
-      Get.offNamed("/chat-page");
+      Get.offAllNamed('/chat-page');
     }
   }
 }

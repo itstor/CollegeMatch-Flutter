@@ -113,6 +113,16 @@ class AuthService {
     }
   }
 
+  Future<bool> isUserPhoneNumberVerified(String uid) async {
+    try {
+      DocumentSnapshot user = await users.doc(uid).get();
+
+      return user.get('phoneNumberVerified');
+    } catch (firebaseAuthException) {
+      rethrow;
+    }
+  }
+
   Future verifyPhoneNumber(
       {required String phoneNumber,
       required void Function(PhoneAuthCredential) verificationCompleted,

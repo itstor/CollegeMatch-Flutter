@@ -19,9 +19,11 @@ class RoundedTextFieldWidget extends StatelessWidget {
   final Widget? suffixIcon;
   final String? initialValue;
   final String? errorText;
+  final TextEditingController? controller;
 
   const RoundedTextFieldWidget({
     Key? key,
+    this.controller,
     this.validator,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.done,
@@ -40,6 +42,7 @@ class RoundedTextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       validator: validator,
       keyboardType: keyboardType,
       textInputAction: textInputAction,

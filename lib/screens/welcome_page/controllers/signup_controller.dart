@@ -174,7 +174,7 @@ class SignUpController extends GetxController {
               phone: _phoneNumber,
             );
 
-            authController.setInitialScreen(authController.firebaseUser.value);
+            // authController.setInitialScreen(authController.firebaseUser.value);
             // _authService.verifyPhoneNumber(
             //     phoneNumber: _phoneNumber,
             //     verificationCompleted: (credential) {},
