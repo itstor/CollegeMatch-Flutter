@@ -21,19 +21,23 @@ class SignUpFormSecond extends StatelessWidget {
           key: _controller.formKeySecond,
           child: Column(
             children: [
-              RoundedTextFieldWidget(
-                hintText: "Username",
-                initialValue:
-                    _controller.username == '' ? null : _controller.username,
-                validator: (value) => _controller.usernameValidator(value!),
-                onChanged: _controller.setUsername,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-              ),
+              Obx(() => RoundedTextFieldWidget(
+                    hintText: "Username",
+                    initialValue: _controller.username == ''
+                        ? null
+                        : _controller.username,
+                    validator: (value) => _controller.usernameValidator(value!),
+                    onChanged: _controller.onChangeUsername,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    errorText: _controller.usernameErrorMsg == ''
+                        ? null
+                        : _controller.usernameErrorMsg,
+                  )),
               const SizedBox(height: 24),
               InternationalPhoneNumberInput(
                 onInputChanged: (PhoneNumber number) {
-                  _controller.setPhoneNumber(number.phoneNumber ?? '');
+                  _controller.onChangePhoneNumber(number.phoneNumber ?? '');
                 },
                 onInputValidated: (bool value) {
                   print(value);

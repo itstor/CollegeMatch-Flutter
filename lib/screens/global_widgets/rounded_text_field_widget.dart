@@ -18,9 +18,12 @@ class RoundedTextFieldWidget extends StatelessWidget {
   final bool obscureText;
   final Widget? suffixIcon;
   final String? initialValue;
+  final String? errorText;
+  final TextEditingController? controller;
 
   const RoundedTextFieldWidget({
     Key? key,
+    this.controller,
     this.validator,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.done,
@@ -33,11 +36,13 @@ class RoundedTextFieldWidget extends StatelessWidget {
     this.obscureText = false,
     this.suffixIcon,
     this.initialValue,
+    this.errorText,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       validator: validator,
       keyboardType: keyboardType,
       textInputAction: textInputAction,
@@ -49,6 +54,7 @@ class RoundedTextFieldWidget extends StatelessWidget {
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 18, vertical: 18),
         hintText: hintText,
+        errorText: errorText,
         hintStyle: Get.textTheme.bodyText2!.copyWith(
           fontWeight: FontWeight.w600,
           color: const Color(0xFFC8C8C8),

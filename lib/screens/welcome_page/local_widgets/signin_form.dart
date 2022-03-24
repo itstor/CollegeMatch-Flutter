@@ -22,14 +22,19 @@ class SignInForm extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              RoundedTextFieldWidget(
-                hintText: "Email Address",
-                initialValue:
-                    _controller.email == '' ? null : _controller.email,
-                validator: (value) => _controller.emailValidator(value!),
-                onChanged: _controller.setEmail,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
+              Obx(
+                () => RoundedTextFieldWidget(
+                  hintText: "Email Address",
+                  initialValue:
+                      _controller.email == '' ? null : _controller.email,
+                  validator: (value) => _controller.emailValidator(value!),
+                  onChanged: _controller.onChangeEmail,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  errorText: _controller.emailErrorMsg == ''
+                      ? null
+                      : _controller.emailErrorMsg,
+                ),
               ),
               const SizedBox(height: 24),
               Obx(
@@ -38,10 +43,13 @@ class SignInForm extends StatelessWidget {
                   initialValue:
                       _controller.password == '' ? null : _controller.password,
                   validator: (value) => _controller.passwordValidator(value!),
-                  onChanged: _controller.setPassword,
+                  onChanged: _controller.onChangePassword,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
                   obscureText: _controller.hidePassword,
+                  errorText: _controller.passwordErrorMsg == ''
+                      ? null
+                      : _controller.passwordErrorMsg,
                   suffixIcon: IconButton(
                     icon: Icon(
                       _controller.hidePassword

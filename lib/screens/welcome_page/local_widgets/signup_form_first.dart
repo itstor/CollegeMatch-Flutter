@@ -1,5 +1,6 @@
 import 'package:college_match/core/values/colors.dart';
 import 'package:college_match/core/values/firebase_constants.dart';
+import 'package:college_match/data/services/auth_service.dart';
 import 'package:college_match/screens/global_widgets/glow_button_widget.dart';
 import 'package:college_match/screens/global_widgets/rounded_text_field_widget.dart';
 import 'package:college_match/screens/welcome_page/controllers/signup_controller.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 
 class SignUpFormFirst extends StatelessWidget {
   final _controller = Get.find<SignUpController>();
+  final _authService = Get.find<AuthService>();
 
   SignUpFormFirst({Key? key}) : super(key: key);
 
@@ -26,9 +28,12 @@ class SignUpFormFirst extends StatelessWidget {
                 initialValue:
                     _controller.email == '' ? null : _controller.email,
                 validator: (value) => _controller.emailValidator(value!),
-                onChanged: _controller.setEmail,
+                onChanged: _controller.onChangeEmail,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
+                errorText: _controller.emailErrorMsg == ''
+                    ? null
+                    : _controller.emailErrorMsg,
               ),
               const SizedBox(height: 24),
               Obx(
@@ -37,7 +42,7 @@ class SignUpFormFirst extends StatelessWidget {
                   initialValue:
                       _controller.password == '' ? null : _controller.password,
                   validator: (value) => _controller.passwordValidator(value!),
-                  onChanged: _controller.setPassword,
+                  onChanged: _controller.onChangePassword,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
                   obscureText: _controller.hidePassword,
@@ -51,6 +56,9 @@ class SignUpFormFirst extends StatelessWidget {
                     onPressed: _controller.togglePassword,
                     padding: EdgeInsets.zero,
                   ),
+                  errorText: _controller.passwordErrorMsg == ''
+                      ? null
+                      : _controller.passwordErrorMsg,
                 ),
               ),
               const SizedBox(height: 24),
@@ -61,7 +69,7 @@ class SignUpFormFirst extends StatelessWidget {
                       ? null
                       : _controller.confirmPassword,
                   validator: (value) =>
-                      _controller.confirmPasswordValidator(value!),
+                      _controller.confirmPasswordValidator(value),
                   onChanged: _controller.setConfirmPassword,
                   keyboardType: TextInputType.text,
                   textInputAction: TextInputAction.next,
@@ -152,7 +160,7 @@ class SignUpFormFirst extends StatelessWidget {
                 glowOffset: const Offset(0, 8),
                 borderRadius: 34,
                 blurRadius: 15,
-                onPressed: authController.signInWithGoogle,
+                onPressed: _authService.signInWithGoogle,
               ),
             ],
           ),
