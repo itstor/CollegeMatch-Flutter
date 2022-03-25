@@ -11,14 +11,15 @@ class UserModel {
   String? major;
   String? gender;
   String? mbti;
+  DateTime? birthday;
   bool? questionaireFilled;
   bool? registerFinished;
   bool? emailVerified;
   List<String>? alreadyConnect;
+  List<String>? interests;
 
   UserModel({
     this.uid,
-    this.answerId,
     this.photoUrl,
     this.email,
     this.username,
@@ -31,12 +32,13 @@ class UserModel {
     this.emailVerified,
     this.mbti,
     this.gender,
+    this.birthday,
+    this.interests,
   });
 
   Map<String, dynamic> toMap() {
     return {
       'uid': uid,
-      'answerId': answerId,
       'photoUrl': photoUrl,
       'email': email,
       'username': username,
@@ -45,6 +47,8 @@ class UserModel {
       'major': major,
       'mbti': mbti,
       'gender': gender,
+      'birthday': birthday,
+      'interests': interests,
       'questionaireFilled': questionaireFilled,
       'registerFinished': registerFinished,
       'alreadyConnect': alreadyConnect,
@@ -55,7 +59,6 @@ class UserModel {
   factory UserModel.fromDocument(DocumentSnapshot doc) {
     return UserModel(
       uid: doc.get('uid'),
-      answerId: doc.get('answerId'),
       photoUrl: doc.get('photoUrl'),
       email: doc.get('email'),
       username: doc.get('username'),
@@ -64,6 +67,8 @@ class UserModel {
       major: doc.get('major'),
       mbti: doc.get('mbti'),
       gender: doc.get('gender'),
+      birthday: doc.get('birthday'),
+      interests: doc.get('interests'),
       questionaireFilled: doc.get('questionaireFilled'),
       registerFinished: doc.get('registerFinished'),
       alreadyConnect: doc.get('alreadyConnect'),

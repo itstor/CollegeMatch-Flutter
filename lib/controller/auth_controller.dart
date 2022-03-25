@@ -23,26 +23,40 @@ class AuthController extends GetxController {
     super.onReady();
 
     firebaseUser = Rx<User?>(auth.currentUser);
-    googleSignInAccount = Rx<GoogleSignInAccount?>(googleSign.currentUser);
+    // googleSignInAccount = Rx<GoogleSignInAccount?>(googleSign.currentUser);
 
     firebaseUser.bindStream(auth.userChanges());
     ever(firebaseUser, _setInitialScreen);
   }
 
-  _setInitialScreen(User? user) {
+  _setInitialScreen(User? user) async {
     if (user == null) {
       Get.offAllNamed('/welcome-page');
     } else {
-      Get.offAllNamed('/chat-page');
+      final bool _isUserFinishedRegister =
+          await _authService.isUserFinishedRegister(auth.currentUser!.uid);
+
+      final bool _isUserFilledQuitionaire =
+          await _authService.isUserFilledQuestionaire(auth.currentUser!.uid);
+
+      if (_isUserFinishedRegister && _isUserFilledQuitionaire) {
+        Get.offAllNamed('/chat-page');
+      } else if (_isUserFinishedRegister) {
+        Get.offAllNamed('/personal-data-page');
+      } else {
+        if (Get.currentRoute != '/welcome-page') {
+          Get.offAllNamed('/welcome-page');
+        }
+      }
     }
   }
 
-  _setInitialScreenGoogle(GoogleSignInAccount? googleSignInAccount) {
-    print(googleSignInAccount);
-    if (googleSignInAccount == null) {
-      Get.offAllNamed('/welcome-page');
-    } else {
-      Get.offAllNamed('/chat-page');
-    }
-  }
+  // _setInitialScreenGoogle(GoogleSignInAccount? googleSignInAccount) {
+  //   // print(googleSignInAccount);
+  //   if (googleSignInAccount == null) {
+  //     Get.offAllNamed('/welcome-page');
+  //   } else {
+  //     Get.offAllNamed('/chat-page');
+  //   }
+  // }
 }

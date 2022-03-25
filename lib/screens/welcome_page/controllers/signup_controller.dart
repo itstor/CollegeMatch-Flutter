@@ -1,6 +1,7 @@
 import 'package:college_match/core/values/firebase_constants.dart';
 import 'package:college_match/data/services/auth_service.dart';
 import 'package:college_match/data/services/user_service.dart';
+import 'package:college_match/screens/personal_data_page/personal_data_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -173,6 +174,8 @@ class SignUpController extends GetxController {
               username: _username,
               phone: _phoneNumber,
             );
+
+            Get.offAllNamed(PersonalDataPage.routeName);
 
             // authController.setInitialScreen(authController.firebaseUser.value);
             // _authService.verifyPhoneNumber(

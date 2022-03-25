@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 class ChatPage extends StatelessWidget {
   static String routeName = '/chat-page';
 
-  // final _authService = Get.find<AuthService>();
+  final _authService = Get.find<AuthService>();
 
   ChatPage({Key? key}) : super(key: key);
 
@@ -138,9 +138,9 @@ class ChatPage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 25),
-                            // ElevatedButton(
-                            //     onPressed: () => _authService.signOut(),
-                            //     child: Text("Logout"))
+                            ElevatedButton(
+                                onPressed: () => _authService.signOut(),
+                                child: Text("Logout"))
                           ],
                         ),
                       ),

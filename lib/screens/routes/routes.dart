@@ -14,11 +14,13 @@ class AppRoutes {
     GetPage(
       name: ChatPage.routeName,
       page: () => ChatPage(),
+      transition: Transition.upToDown,
     ),
     GetPage(
       name: PersonalDataPage.routeName,
       page: () => PersonalDataPage(),
       binding: PersonalDataBinding(),
+      transition: Transition.upToDown,
     ),
   ];
 }

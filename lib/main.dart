@@ -14,7 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await firebaseInitialization.then((_) {
     Get.lazyPut(() => AuthService());
-    // Get.put(AuthController());
+    Get.put(AuthController());
   });
   await GetStorage.init();
   runApp(const MyApp());
@@ -29,8 +29,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'College Match',
       theme: AppThemes.lightTheme,
-      // initialRoute: '/welcome-page',
-      initialRoute: '/personal-data-page',
+      initialRoute: '/welcome-page',
       getPages: AppRoutes.routes,
     );
   }

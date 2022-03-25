@@ -4,12 +4,15 @@ import 'package:college_match/core/values/colors.dart';
 import 'package:college_match/core/values/firebase_constants.dart';
 import 'package:college_match/data/model/major_model.dart';
 import 'package:college_match/data/model/user_answers_model.dart';
+import 'package:college_match/data/model/user_model.dart';
+import 'package:college_match/data/services/firestorage_service.dart';
 import 'package:college_match/data/services/user_service.dart';
+import 'package:college_match/screens/chat_page/chat_page.dart';
 import 'package:college_match/screens/global_widgets/rounded_text_field_widget.dart';
-import 'package:college_match/screens/personal_data_page/controllers/interest_data.dart';
-import 'package:college_match/screens/personal_data_page/controllers/lifestyleq_data.dart';
-import 'package:college_match/screens/personal_data_page/controllers/majors_data.dart';
-import 'package:college_match/screens/personal_data_page/controllers/personalityq_data.dart';
+import 'package:college_match/screens/personal_data_page/data/interest_data.dart';
+import 'package:college_match/screens/personal_data_page/data/lifestyleq_data.dart';
+import 'package:college_match/screens/personal_data_page/data/majors_data.dart';
+import 'package:college_match/screens/personal_data_page/data/personalityq_data.dart';
 import 'package:college_match/screens/personal_data_page/local_widgets/major_bottom_sheet_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +26,7 @@ import 'package:drop_down_list/drop_down_list.dart';
 
 class PersonalDataPageController extends GetxController {
   final _userService = Get.find<UserService>();
+  final _fireStorageService = Get.find<FirestorageService>();
   late final personalityData = Get.find<PersonalityQData>();
   late final majorData = Get.find<MajorsData>();
   late final lifestyleData = Get.find<LifestyleQData>();
@@ -181,6 +185,8 @@ class PersonalDataPageController extends GetxController {
       }
       stepIndex.value++;
       scrollController.resetScroll();
+    } else {
+      _submitData();
     }
   }
 
@@ -203,7 +209,7 @@ class PersonalDataPageController extends GetxController {
         borderRadius: 16,
         height: 280,
         theme: ThemeData(
-          primarySwatch: Colors.pink,
+          primarySwatch: AppColor.purplePallete,
         ));
 
     if (_birthday != null) {
@@ -241,20 +247,43 @@ class PersonalDataPageController extends GetxController {
     lifestyleData.state![index].answer = value;
   }
 
-  void _submitData() {
+  void _submitData() async {
     List<int> personalityAnswers = [];
     List<bool> lifestyleAnswers = [];
 
-    personalityData.state!
-        .map((e) => personalityAnswers.add(e.scaleAnswers ?? 0));
-    lifestyleData.state!.map((e) => lifestyleAnswers.add(e.answer ?? false));
+    for (var e in personalityData.state!) {
+      personalityAnswers.add(e.scaleAnswers ?? 0);
+    }
+    for (var e in lifestyleData.state!) {
+      lifestyleAnswers.add(e.answer ?? false);
+    }
 
-    _userService.putUserAnswers(
+    List<int> bruh = personalityAnswers.take(32).toList();
+
+    _userService.addUserAnswers(
         uid: auth.currentUser!.uid,
         answers: UserAnswersModel(
           userId: auth.currentUser!.uid,
           lifestyleAnswer: lifestyleAnswers,
-          personalityAnswer: personalityAnswers,
+          personalityAnswer: bruh,
         ).toMap());
+
+    //TODO upload default image if no image is selected
+    String? profilePitureUrl = await _fireStorageService.uploadProfileImage(
+        auth.currentUser!.uid, profilePicture.value!);
+
+    //TODO calculate user mbti and update user db
+
+    _userService.registerThirdStep(
+      uid: auth.currentUser!.uid,
+      name: _name,
+      birthday: _birthday!,
+      major: _major,
+      gender: gender.value,
+      interests: interestList,
+      photoUrl: profilePitureUrl!,
+    );
+
+    Get.offAllNamed(ChatPage.routeName);
   }
 }
