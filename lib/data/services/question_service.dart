@@ -49,7 +49,7 @@ class QuestionService {
 
     try {
       await FirebaseFirestore.instance
-          .collection('personalityQuestions')
+          .collection('testmbti')
           .orderBy("index", descending: false)
           .get()
           .then(

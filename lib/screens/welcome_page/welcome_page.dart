@@ -120,7 +120,7 @@ class WelcomePage extends StatelessWidget {
                         SizedBox(
                           width: 240,
                           child: Text(
-                            "Lorem ipsum  dolor sit amet lorem lorem lorem lorem ipsum",
+                            "Find new friends and come together with your college mates",
                             textAlign: TextAlign.center,
                             style: Get.textTheme.bodyText2,
                           ),

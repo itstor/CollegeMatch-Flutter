@@ -1,4 +1,3 @@
-import 'package:college_match/data/services/firestorage_service.dart';
 import 'package:college_match/data/services/question_service.dart';
 import 'package:college_match/data/services/user_service.dart';
 import 'package:college_match/screens/personal_data_page/data/interest_data.dart';
@@ -13,7 +12,6 @@ class PersonalDataBinding implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut<UserService>(() => UserService());
-    Get.lazyPut<FirestorageService>(() => FirestorageService());
     Get.lazyPut<QuestionService>(() => QuestionService());
     Get.lazyPut<PersonalityQData>(() => PersonalityQData());
     Get.lazyPut<LifestyleQData>(() => LifestyleQData());

@@ -41,7 +41,7 @@ class PersonalityCardWidget extends StatelessWidget {
           ),
           SizedBox(height: 18),
           SliderWidget(
-            min: 0,
+            min: 1,
             max: 5,
             onChanged: onChanged,
             value: initialValue,

@@ -15,8 +15,8 @@ class UserModel {
   bool? questionaireFilled;
   bool? registerFinished;
   bool? emailVerified;
-  List<String>? alreadyConnect;
-  List<String>? interests;
+  List<dynamic>? alreadyConnect;
+  List<dynamic>? interests;
 
   UserModel({
     this.uid,
@@ -67,7 +67,7 @@ class UserModel {
       major: doc.get('major'),
       mbti: doc.get('mbti'),
       gender: doc.get('gender'),
-      birthday: doc.get('birthday'),
+      birthday: (doc.get('birthday') as Timestamp).toDate(),
       interests: doc.get('interests'),
       questionaireFilled: doc.get('questionaireFilled'),
       registerFinished: doc.get('registerFinished'),

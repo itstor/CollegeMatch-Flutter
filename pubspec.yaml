@@ -56,6 +56,8 @@ dependencies:
   smart_select: ^4.3.2
   flutter_svg: ^1.0.3
   bouncing_widget: ^2.0.0
+  shimmer: ^2.0.0
+  photo_view: ^0.13.0
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +85,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/images/default-profile-picture/
+    - assets/animations/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

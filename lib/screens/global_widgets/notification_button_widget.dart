@@ -25,34 +25,15 @@ class NotficationButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        RoundedIconButtonWidget(
-          size: size,
-          color: color,
-          onPressed: onPressed,
-          icon: icon,
+        Container(
+          width: 30,
+          height: 30,
+          child: RoundedIconButtonWidget(
+            color: color,
+            onPressed: onPressed,
+            icon: icon,
+          ),
         ),
-        Positioned(
-          top: -4,
-          left: size / 2,
-          child: number == null || number == 0
-              ? Container()
-              : Container(
-                  width: notificationSize,
-                  height: notificationSize,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: notificationColor,
-                  ),
-                  child: Center(
-                    child: Text(
-                      number.toString(),
-                      style: Theme.of(context).textTheme.caption?.copyWith(
-                            color: Colors.white,
-                          ),
-                    ),
-                  ),
-                ),
-        )
       ],
     );
   }

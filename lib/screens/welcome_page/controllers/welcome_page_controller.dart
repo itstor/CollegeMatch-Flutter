@@ -26,4 +26,12 @@ class WelcomePageController extends GetxController {
       });
     }
   }
+
+  void setPanelState(WelcomePanelState state) {
+    panelState.value = state;
+  }
+
+  void openPanel() {
+    panelController.open();
+  }
 }

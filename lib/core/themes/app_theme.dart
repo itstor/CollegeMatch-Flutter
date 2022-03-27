@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 class AppThemes {
   static final ThemeData lightTheme = ThemeData.light().copyWith(
-    primaryColor: AppColor.kPrimaryPurple[50],
+    colorScheme: ThemeData().colorScheme.copyWith(
+          primary: AppColor.kPrimaryPurple[100],
+        ),
     scaffoldBackgroundColor: Colors.white,
     textTheme: textTheme,
   );

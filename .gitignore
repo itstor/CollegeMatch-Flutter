@@ -48,3 +48,4 @@ app.*.map.json
 
 #Secrets
 google-services.json
+api_key.dart
