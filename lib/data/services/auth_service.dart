@@ -27,18 +27,14 @@ class AuthService {
         if (authResult.additionalUserInfo!.isNewUser) {
           await users.doc(auth.currentUser?.uid).set(UserModel(
                   uid: auth.currentUser!.uid,
-                  answerId: '',
                   photoUrl: auth.currentUser!.photoURL!,
                   email: auth.currentUser!.email!,
-                  username: '',
-                  phone: '',
-                  name: '',
-                  major: '',
                   questionaireFilled: false,
                   registerFinished: false,
                   alreadyConnect: [],
                   emailVerified: false)
-              .toMap());
+              .toMap()
+            ..['createdAt'] = FieldValue.serverTimestamp());
         }
 
         return authResult;
@@ -70,18 +66,12 @@ class AuthService {
 
       await users.doc(auth.currentUser?.uid).set(UserModel(
               uid: auth.currentUser!.uid,
-              answerId: '',
-              photoUrl: '',
               email: email,
-              username: '',
-              phone: '',
-              name: '',
-              major: '',
               questionaireFilled: false,
               registerFinished: false,
-              alreadyConnect: [],
               emailVerified: false)
-          .toMap());
+          .toMap()
+        ..['createdAt'] = FieldValue.serverTimestamp());
 
       return authResult;
     } catch (firebaseAuthException) {

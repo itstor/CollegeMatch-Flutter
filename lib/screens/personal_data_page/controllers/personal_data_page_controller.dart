@@ -5,21 +5,20 @@ import 'package:college_match/core/values/firebase_constants.dart';
 import 'package:college_match/data/model/major_model.dart';
 import 'package:college_match/data/model/user_answers_model.dart';
 import 'package:college_match/data/services/user_service.dart';
-import 'package:college_match/screens/global_widgets/rounded_text_field_widget.dart';
-import 'package:college_match/screens/personal_data_page/controllers/interest_data.dart';
-import 'package:college_match/screens/personal_data_page/controllers/lifestyleq_data.dart';
-import 'package:college_match/screens/personal_data_page/controllers/majors_data.dart';
-import 'package:college_match/screens/personal_data_page/controllers/personalityq_data.dart';
+import 'package:college_match/screens/global_widgets/dot_loading.dart';
+import 'package:college_match/screens/main_page/main_page.dart';
+import 'package:college_match/screens/personal_data_page/data/interest_data.dart';
+import 'package:college_match/screens/personal_data_page/data/lifestyleq_data.dart';
+import 'package:college_match/screens/personal_data_page/data/majors_data.dart';
+import 'package:college_match/screens/personal_data_page/data/personalityq_data.dart';
 import 'package:college_match/screens/personal_data_page/local_widgets/major_bottom_sheet_widget.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:college_match/screens/search_partner_page/search_partner_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_rounded_date_picker/flutter_rounded_date_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
-import 'package:drop_down_list/drop_down_list.dart';
 
 class PersonalDataPageController extends GetxController {
   final _userService = Get.find<UserService>();
@@ -45,10 +44,36 @@ class PersonalDataPageController extends GetxController {
   Rx<bool> isBackButtonVisible = true.obs;
   Rx<int> stepIndex = 0.obs;
   Rx<bool> isScrolling = false.obs;
+  late Rx<bool> isLoading;
   List<String> interestList = [];
+  late final bool isRetake;
 
   String get name => _name;
   DateTime? get birthday => _birthday;
+
+  @override
+  void onReady() {
+    super.onReady();
+
+    isLoading = Rx<bool>(false);
+
+    ever<bool>(isLoading, (isLoading) {
+      if (isLoading) {
+        Get.defaultDialog(
+          title: 'Loading',
+          content: Container(
+            height: 50,
+            width: 50,
+            child: Center(
+              child: DotLoading(),
+            ),
+          ),
+        );
+      } else {
+        Get.back();
+      }
+    });
+  }
 
   @override
   void onInit() {
@@ -60,6 +85,16 @@ class PersonalDataPageController extends GetxController {
     majorSearchTextController = TextEditingController();
     personalityScrollController = scrollController.addAndGet();
     lifeStyleScrollController = scrollController.addAndGet();
+
+    try {
+      isRetake = Get.arguments['retake'];
+    } catch (e) {
+      isRetake = false;
+    }
+
+    if (isRetake) {
+      stepIndex.value = 4;
+    }
 
     scrollController.addOffsetChangedListener(() {
       // print(scrollController.offset);
@@ -97,6 +132,9 @@ class PersonalDataPageController extends GetxController {
 
   Future<bool> goBack() {
     if (stepIndex.value > 0) {
+      if (stepIndex.value > 3 && isRetake) {
+        return Future.value(true);
+      }
       stepIndex.value--;
       scrollController.resetScroll();
 
@@ -181,6 +219,8 @@ class PersonalDataPageController extends GetxController {
       }
       stepIndex.value++;
       scrollController.resetScroll();
+    } else {
+      _submitData();
     }
   }
 
@@ -203,7 +243,7 @@ class PersonalDataPageController extends GetxController {
         borderRadius: 16,
         height: 280,
         theme: ThemeData(
-          primarySwatch: Colors.pink,
+          primarySwatch: AppColor.purplePallete,
         ));
 
     if (_birthday != null) {
@@ -231,9 +271,8 @@ class PersonalDataPageController extends GetxController {
   }
 
   void updatePersonalityAnswer(int index, double value) {
-    personalityData.state![index].scaleAnswers = value * 10 ~/ 2;
-    print(value);
-    //TODO FIX THIS
+    personalityData.state![index].scaleAnswers = (value * 4).toInt() + 1;
+    // // print(value);
     // print(personalityData.state![index].scaleAnswers);
   }
 
@@ -241,20 +280,54 @@ class PersonalDataPageController extends GetxController {
     lifestyleData.state![index].answer = value;
   }
 
-  void _submitData() {
+  void _submitData() async {
     List<int> personalityAnswers = [];
     List<bool> lifestyleAnswers = [];
 
-    personalityData.state!
-        .map((e) => personalityAnswers.add(e.scaleAnswers ?? 0));
-    lifestyleData.state!.map((e) => lifestyleAnswers.add(e.answer ?? false));
+    isLoading.value = true;
 
-    _userService.putUserAnswers(
+    for (var e in personalityData.state!) {
+      personalityAnswers.add(e.scaleAnswers ?? 0);
+    }
+    for (var e in lifestyleData.state!) {
+      lifestyleAnswers.add(e.answer ?? false);
+    }
+
+    _userService.addUserAnswers(
         uid: auth.currentUser!.uid,
         answers: UserAnswersModel(
           userId: auth.currentUser!.uid,
           lifestyleAnswer: lifestyleAnswers,
           personalityAnswer: personalityAnswers,
         ).toMap());
+
+    //TODO upload default image if no image is selected
+    String? profilePitureUrl = await _userService.uploadProfileImage(
+        auth.currentUser!.uid, profilePicture.value!);
+
+    _userService.addUserInterest(
+      uid: auth.currentUser!.uid,
+      interests: interestList,
+    );
+
+    String userMBTI =
+        await _userService.calculateUserMBTI(auth.currentUser!.uid);
+
+    _userService.registerThirdStep(
+      uid: auth.currentUser!.uid,
+      name: _name,
+      birthday: _birthday!,
+      major: _major,
+      gender: gender.value,
+      interests: interestList,
+      photoUrl: profilePitureUrl!,
+      mbti: userMBTI,
+    );
+
+    print(userMBTI);
+
+    isLoading.value = false;
+
+    Get.offAllNamed(SearchPartnerPage.routeName, arguments: true);
   }
 }

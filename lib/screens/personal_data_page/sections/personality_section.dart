@@ -92,7 +92,7 @@ class PersonalitySection extends StatelessWidget {
       padding: EdgeInsets.only(bottom: 16),
       child: PersonalityCardWidget(
         question: questionData.question,
-        initialValue: (questionData.scaleAnswers ?? 0).toDouble() / 4,
+        initialValue: ((questionData.scaleAnswers ?? 1).toDouble() - 1) / 4,
         onChanged: (value) {
           _controller.updatePersonalityAnswer(index, value ?? 0);
         },

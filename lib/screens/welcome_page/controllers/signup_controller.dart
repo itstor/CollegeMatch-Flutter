@@ -1,6 +1,7 @@
 import 'package:college_match/core/values/firebase_constants.dart';
 import 'package:college_match/data/services/auth_service.dart';
 import 'package:college_match/data/services/user_service.dart';
+import 'package:college_match/screens/personal_data_page/personal_data_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -49,6 +50,7 @@ class SignUpController extends GetxController {
   get usernameErrorMsg => _usernameErrorMsg.value;
 
   void setConfirmPassword(String value) => _confirmPassword = value;
+  void setSignUpStep(SignUpSteps value) => _currentStep.value = value;
 
   void onChangeEmail(String value) {
     if (_emailErrorMsg.value != '') {
@@ -138,7 +140,7 @@ class SignUpController extends GetxController {
             .registerWithEmailAndPassword(_email, _password)
             .then((_) {
           _isLoading.value = false;
-          _currentStep.value = SignUpSteps.second;
+          // _currentStep.value = SignUpSteps.second;
         });
       } on FirebaseAuthException catch (e) {
         _isLoading.value = false;
@@ -173,6 +175,8 @@ class SignUpController extends GetxController {
               username: _username,
               phone: _phoneNumber,
             );
+
+            Get.offAllNamed(PersonalDataPage.routeName);
 
             // authController.setInitialScreen(authController.firebaseUser.value);
             // _authService.verifyPhoneNumber(

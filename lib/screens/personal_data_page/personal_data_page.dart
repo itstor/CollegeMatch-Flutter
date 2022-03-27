@@ -23,6 +23,7 @@ class PersonalDataPage extends StatelessWidget {
     return WillPopScope(
       onWillPop: _controller.goBack,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
             Container(
@@ -90,7 +91,7 @@ class PersonalDataPage extends StatelessWidget {
                   )
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

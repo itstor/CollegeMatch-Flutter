@@ -1,7 +1,19 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:college_match/core/utils.dart';
 import 'package:college_match/core/values/colors.dart';
-import 'package:college_match/data/services/auth_service.dart';
-import 'package:college_match/screens/global_widgets/notification_button_widget.dart';
-import 'package:college_match/screens/global_widgets/rounded_icon_button_widget.dart';
+import 'package:college_match/data/model/message_chat_model.dart';
+import 'package:college_match/data/model/user_model.dart';
+import 'package:college_match/screens/chat_page/controllers/chat_page_controller.dart';
+import 'package:college_match/screens/chat_page/local_widgets/left_chat_widget.dart';
+import 'package:college_match/screens/chat_page/local_widgets/message_text_field.dart';
+import 'package:college_match/screens/chat_page/local_widgets/request_parnet_reveal_widget.dart';
+import 'package:college_match/screens/chat_page/local_widgets/response_partner_reveal_widget.dart';
+import 'package:college_match/screens/chat_page/local_widgets/right_chat_widget.dart';
+import 'package:college_match/screens/global_widgets/dot_loading.dart';
+import 'package:college_match/screens/global_widgets/glow_button_widget.dart';
+import 'package:college_match/screens/global_widgets/revealed_text_widget.dart';
+import 'package:college_match/screens/global_widgets/rounded_text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
@@ -9,243 +21,214 @@ import 'package:get/get.dart';
 class ChatPage extends StatelessWidget {
   static String routeName = '/chat-page';
 
-  // final _authService = Get.find<AuthService>();
+  final _controller = Get.find<ChatPageController>();
 
-  ChatPage({Key? key}) : super(key: key);
+  ChatPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/background-1.png"),
-                fit: BoxFit.cover,
-              ),
+      backgroundColor: Color(0xFFFBFAFF),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(80),
+        child: Obx(
+          () => Container(
+            padding: EdgeInsets.only(
+              left: 24,
+              right: 24,
+              bottom: 16,
+              top: MediaQuery.of(context).padding.top + 16,
             ),
-          ),
-          SafeArea(
-            child: Column(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF8F8F8F).withOpacity(0.15),
+                  offset: const Offset(0, 4),
+                  blurRadius: 27,
+                ),
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Container(
-                    height: 155,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 27),
-                        _buildHeader(),
-                        Expanded(
-                          child: Center(
-                              child: Container(
-                            width: Get.size.width * 0.8,
-                            height: 40,
-                            // color: Colors.amber,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.white,
-                              //TODO Inner Shadow
-                            ),
-                          )),
-                        ),
-                      ],
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: Utils.imageSelector(_controller.isRevealed.value,
+                          _controller.peerUser.photoUrl!, 'Male'),
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(32),
-                        topRight: Radius.circular(32),
-                      ),
-                    ),
-                    padding: EdgeInsets.only(top: 32),
-                    child: SingleChildScrollView(
-                      physics: BouncingScrollPhysics(),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 32),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Chat',
-                              style: Get.textTheme.headline1,
-                            ),
-                            const SizedBox(height: 25),
-                            Container(
-                              height: 44,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 44,
-                                    width: 44,
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey[200],
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'Carl Johson',
-                                          style: Get.textTheme.bodyText1,
-                                        ),
-                                        Text(
-                                          'Halo Selamat  Pagi',
-                                          style:
-                                              Get.textTheme.caption!.copyWith(
-                                            color: Colors.grey[600],
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          '12:30',
-                                          style:
-                                              Get.textTheme.caption!.copyWith(
-                                            color: Colors.grey[600],
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Today',
-                                          style:
-                                              Get.textTheme.caption!.copyWith(
-                                            color: Colors.grey[600],
-                                            fontWeight: FontWeight.w300,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 25),
-                            // ElevatedButton(
-                            //     onPressed: () => _authService.signOut(),
-                            //     child: Text("Logout"))
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                SizedBox(width: 8),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    RevealedTextWidget(
+                        isRevealed: _controller.isRevealed.value,
+                        unReveal: _controller.peerUser.major!,
+                        reveal: _controller.peerUser.name!,
+                        style: Get.textTheme.subtitle1!),
+                    // Text(
+                    //   'Online',
+                    //   style: Get.textTheme.caption,
+                    // ),
+                  ],
+                ),
+                // Icon(Icons.more_vert),
+                Expanded(child: Container()),
+                IconButton(
+                  icon: Icon(Icons.more_vert),
+                  onPressed: () => _controller.showMoreMenu(context),
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
                 ),
               ],
             ),
           ),
-          Positioned(
-            bottom: 0,
-            child: Container(
-              width: Get.size.width,
-              height: 60,
-              // color: Colors.amber,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    blurRadius: 50,
-                    spreadRadius: 0,
-                    offset: const Offset(0, -5),
-                  )
-                ],
-              ),
-              child: Row(),
+        ),
+      ),
+      bottomSheet: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(30),
+            topRight: Radius.circular(30),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF8F8F8F).withOpacity(0.15),
+              offset: const Offset(0, -4),
+              blurRadius: 27,
             ),
-          )
-        ],
+          ],
+        ),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: 100,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                    color: Color(0xFFF4F4F4), shape: BoxShape.circle),
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  constraints: BoxConstraints(),
+                  icon: Icon(IconlyLight.image2),
+                  color: Color(0xFFA6A6A6),
+                  onPressed: () => _controller.getImage(),
+                ),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: MessageTextFieldWidget(
+                  controller: _controller.messageTextController,
+                  onSendPressed: () {
+                    _controller.sendMessage(MessageType.text,
+                        _controller.messageTextController.text);
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 60),
+        child: Obx(() => buildListMessage(_controller.isRevealed.value)),
       ),
     );
   }
 
-  Row _buildHeader() {
-    return Row(
-      children: [
-        Container(
-          height: 45,
-          width: 45,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(22),
-          ),
-        ),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Good Evening',
-                style: Get.textTheme.caption!.copyWith(
-                  color: Colors.grey[600],
-                  fontWeight: FontWeight.w300,
-                  fontSize: 12,
-                ),
-              ),
-              Text(
-                'John Doe',
-                style: Get.textTheme.subtitle1!.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-        ),
-        NotficationButtonWidget(
-          size: 32,
-          color: AppColor.kPrimaryPink[100]!,
-          icon: const Icon(
-            IconlyLight.notification,
-            color: Colors.white,
-            size: 16,
-          ),
-          onPressed: () {},
-          notificationColor: AppColor.kAccentColor['red']!,
-          notificationSize: 18,
-          number: 10,
-        ),
-        SizedBox(width: 8),
-        Container(
-          height: 32,
-          width: 32,
-          decoration: BoxDecoration(
-            color: Color(0xFFC4B1F8),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: IconButton(
-            onPressed: () {
-              //TODO Notification Button
-              print("Hllo");
+  Widget buildListMessage(bool revealed) {
+    return _controller.groupChatId.isNotEmpty
+        ? StreamBuilder<QuerySnapshot>(
+            stream: _controller.chatService.getChatStream(
+                _controller.groupChatId, _controller.limit.value),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData) {
+                _controller.listMessage = snapshot.data!.docs;
+                if (_controller.listMessage.isNotEmpty) {
+                  return ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    separatorBuilder: (_, __) => SizedBox(height: 24),
+                    padding: const EdgeInsets.all(24),
+                    itemBuilder: (context, index) => buildItem(
+                        context, snapshot.data?.docs[index], revealed),
+                    itemCount: snapshot.data?.docs.length ?? 0,
+                    reverse: true,
+                    controller: _controller.listScrollController,
+                  );
+                } else {
+                  return Container();
+                }
+              } else {
+                return const Center(child: DotLoading());
+              }
             },
-            icon: const Icon(
-              IconlyLight.search,
-              color: Colors.white,
-              size: 16,
-            ),
-          ),
-        )
-      ],
-    );
+          )
+        : const Center(child: DotLoading());
+  }
+
+  Widget buildItem(
+      BuildContext context, DocumentSnapshot? document, bool revealed) {
+    if (document != null) {
+      Widget content;
+      MessageChatModel chatData = MessageChatModel.fromDocument(document);
+      final bool isAm = chatData.idFrom == _controller.currentUserId;
+
+      if (chatData.type != MessageType.revealReq) {
+        if (chatData.type == MessageType.text) {
+          content = Text(chatData.content);
+        } else if (chatData.type == MessageType.image) {
+          content = Image(image: CachedNetworkImageProvider(chatData.content));
+        } else {
+          content = Text('This message type is not supported');
+        }
+
+        if (isAm) {
+          return RightChatWidget(
+            content: content,
+            time: Utils.formatHour(
+                DateTime.fromMillisecondsSinceEpoch(chatData.timestamp)),
+          );
+        } else {
+          return LeftChatWidget(
+              profileImage: Utils.imageSelector(revealed,
+                  _controller.peerUser.photoUrl!, _controller.peerUser.gender!),
+              content: content,
+              time: Utils.formatHour(
+                  DateTime.fromMillisecondsSinceEpoch(chatData.timestamp)));
+        }
+      } else {
+        if (isAm) {
+          return RequestPartnerRevealWidget();
+        } else {
+          return ResponsePartnerRevealWidget(
+              onTap: () => _controller.chatService
+                  .acceptRevealRequest(_controller.groupChatId));
+        }
+      }
+    }
+    return Container();
   }
 }

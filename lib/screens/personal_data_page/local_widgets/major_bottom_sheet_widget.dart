@@ -1,6 +1,5 @@
 import 'package:college_match/data/model/major_model.dart';
 import 'package:college_match/screens/global_widgets/rounded_text_field_widget.dart';
-import 'package:college_match/screens/personal_data_page/controllers/majors_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';

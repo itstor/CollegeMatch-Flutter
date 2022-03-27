@@ -41,11 +41,10 @@ class ProfilePhotoSection extends StatelessWidget {
                     child: Obx(() => Container(
                           width: Get.width * 0.5,
                           height: Get.width * 0.5,
-                          clipBehavior: Clip.hardEdge,
+                          clipBehavior: Clip.antiAlias,
                           decoration: BoxDecoration(
                             borderRadius:
                                 BorderRadius.circular(Get.width * 0.55 / 2),
-                            color: Colors.white,
                           ),
                           child: _controller.profilePicture.value == null
                               ? Image.asset(
