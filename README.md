@@ -2,16 +2,16 @@
 
 ## Screenshoot
 
-<img src=".readme/homepage.jpg" width="40%">
-<img src=".readme/signin.jpg" width="40%">
-<img src=".readme/signup.jpg" width="40%">
-<img src=".readme/yourname.jpg" width="40%">
-<img src=".readme/gender.jpg" width="40%">
-<img src=".readme/personality.jpg" width="40%">
-<img src=".readme/mark.jpg" width="40%">
-<img src=".readme/mainpage.jpg" width="40%">
-<img src=".readme/findingpartner.jpg" width="40%">
-<img src=".readme/chatpage.jpg" width="40%">
+<img src=".readme/homepage.jpg" width="30%">
+<img src=".readme/signin.jpg" width="30%">
+<img src=".readme/signup.jpg" width="30%">
+<img src=".readme/yourname.jpg" width="30%">
+<img src=".readme/gender.jpg" width="30%">
+<img src=".readme/personality.jpg" width="30%">
+<img src=".readme/mark.jpg" width="30%">
+<img src=".readme/mainpage.jpg" width="30%">
+<img src=".readme/findingpartner.jpg" width="30%">
+<img src=".readme/chatpage.jpg" width="30%">
 
 ## Related Repository
 
