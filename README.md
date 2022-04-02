@@ -2,6 +2,7 @@
 
 ## Screenshoot
 
+<p float="left">
 <img src=".readme/homepage.jpg" width="30%">
 <img src=".readme/signin.jpg" width="30%">
 <img src=".readme/signup.jpg" width="30%">
@@ -12,6 +13,7 @@
 <img src=".readme/mainpage.jpg" width="30%">
 <img src=".readme/findingpartner.jpg" width="30%">
 <img src=".readme/chatpage.jpg" width="30%">
+  </p>
 
 ## Related Repository
 
