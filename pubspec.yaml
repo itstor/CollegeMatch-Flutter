@@ -48,7 +48,7 @@ dependencies:
   intl_phone_number_input: ^0.7.0+2
   pinput: ^2.1.4
   get_storage: ^2.0.3
-  flutter_rounded_date_picker: ^2.0.2
+  flutter_rounded_date_picker: ^3.0.1
   drop_down_list:
     git:
       url: https://github.com/Mindinventory/drop_down_list.git
