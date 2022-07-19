@@ -37,7 +37,7 @@ dependencies:
   firebase_storage: ^10.2.8
   google_fonts: ^2.3.0
   image_picker: ^0.8.4+10
-  dio: ^4.0.4
+  dio: ^4.0.6
   cached_network_image: ^3.2.0
   firebase_core: ^1.19.2
   sliding_up_panel: ^2.0.0+1
