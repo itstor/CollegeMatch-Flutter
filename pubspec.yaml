@@ -32,7 +32,7 @@ dependencies:
 
   get: ^4.6.1
   firebase_auth: ^3.4.2
-  google_sign_in: ^5.2.4
+  google_sign_in: ^5.4.0
   cloud_firestore: ^3.3.0
   firebase_storage: ^10.2.8
   google_fonts: ^2.3.0
