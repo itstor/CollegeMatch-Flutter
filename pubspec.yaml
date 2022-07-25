@@ -39,7 +39,7 @@ dependencies:
   image_picker: ^0.8.5+3
   dio: ^4.0.6
   cached_network_image: ^3.2.1
-  firebase_core: ^1.19.2
+  firebase_core: ^1.20.0
   sliding_up_panel: ^2.0.0+1
   shared_preferences: ^2.0.13
   fluttertoast: ^8.0.9
