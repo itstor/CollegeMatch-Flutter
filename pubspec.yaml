@@ -35,7 +35,7 @@ dependencies:
   google_sign_in: ^5.4.0
   cloud_firestore: ^3.4.2
   firebase_storage: ^10.3.3
-  google_fonts: ^2.3.0
+  google_fonts: ^3.0.1
   image_picker: ^0.8.5+3
   dio: ^4.0.6
   cached_network_image: ^3.2.1
