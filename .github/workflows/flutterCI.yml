@@ -7,35 +7,40 @@ on:
     
 jobs:
   build:
-    # This job will run on ubuntu virtual machine
-    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "."
+
+    runs-on: "ubuntu-latest"
+
     steps:
-    
-    # Setup Java environment in order to build the Android app.
-    - uses: actions/checkout@v1
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '12.x'
-    
-    # Setup the flutter environment.
-    - uses: subosito/flutter-action@v1
-      with:
-        channel: 'stable'
-    
-    # Get flutter dependencies.
-    - run: flutter pub get
-    
-    # Check for any formatting issues in the code.
-    - run: flutter format --set-exit-if-changed .
-    
-    # Statically analyze the Dart code for any errors.
-    - run: flutter analyze .
-    
-    # Build apk.
-    - run: flutter build apk
-    
-    # Upload generated apk to the artifacts.
-    - uses: actions/upload-artifact@v1
-      with:
-        name: release-apk
-        path: build/app/outputs/apk/release/app-release.apk
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v2
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.3.3
+          channel: "stable"
+          cache: true
+
+      - name: 📦 Install Dependencies
+        run: |
+          flutter pub global activate very_good_cli
+          very_good --analytics false
+          very_good packages get --recursive
+      - name: ✨ Check Formatting
+        run: flutter format --set-exit-if-changed lib test
+
+      - name: 🕵️ Analyze
+        run: flutter analyze lib
+
+#       - name: 🧪 Run Tests
+#         run: very_good test -j ${{inputs.concurrency}} ${{(inputs.test_recursion && '--recursive') || ''}} ${{(inputs.test_optimization && '--optimization') || '--no-optimization'}} --coverage --test-randomize-ordering-seed random
+
+      - name: 📊 Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v2
+        with:
+          path: ${{inputs.working_directory}}/coverage/lcov.info
+          exclude: ${{inputs.coverage_excludes}}
+          min_coverage: ${{inputs.min_coverage}}
